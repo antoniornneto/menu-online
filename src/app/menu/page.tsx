@@ -1,3 +1,5 @@
+"use client";
+
 import Menu from "@/components/page/menu";
 import Nav from "@/components/ui/nav";
 
