@@ -28,7 +28,6 @@ export default function page() {
   return (
     <div className="p-5 space-y-5 text-center">
       <Nav />
-      <h1 className="text-2xl font-bold">O que você gostaria de pedir?</h1>
       <Menu products={products} />
     </div>
   );
