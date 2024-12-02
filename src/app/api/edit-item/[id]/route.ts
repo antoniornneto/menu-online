@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
   const { name, description, price, category, quantity } = await req.json();
