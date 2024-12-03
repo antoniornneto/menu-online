@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { FoodItem } from "@/lib/type";
 
 export default async function Component() {
-  const menu: FoodItem = await prisma.menu.findMany();
+  const menu: Array<FoodItem> = await prisma.menu.findMany();
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-6">

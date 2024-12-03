@@ -14,7 +14,7 @@ import { prisma } from "@/lib/prisma";
 import { FoodItem } from "@/lib/type";
 
 export default async function MenuPage() {
-  const menu: FoodItem = await prisma.menu.findMany();
+  const menu: Array<FoodItem> = await prisma.menu.findMany();
 
   return (
     <div className="space-y-5">
