@@ -6,7 +6,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const { name, description, price, category, quantity } = await req.json();
+  const { name, description, price, category, stock } = await req.json();
   await prisma.menu.update({
     where: {
       id: id,
@@ -16,7 +16,7 @@ export async function PUT(
       description,
       price,
       category,
-      quantity,
+      stock,
     },
   });
 

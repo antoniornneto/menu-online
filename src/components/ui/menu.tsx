@@ -1,87 +1,82 @@
 "use client";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Minus, Plus } from "lucide-react";
+
+import { FoodItem, ItemOrder } from "@/lib/type";
+import CardItem from "../menu-components/card";
+import { useState } from "react";
 import { Button } from "./button";
-import { ChangeEvent, useState } from "react";
-import { Input } from "./input";
-import { FoodItem } from "@/lib/type";
+import { useRouter } from "next/navigation";
 
-export default function Menu({ menu }: { menu: Array<FoodItem> }) {
-  const [quantity, setQuantity] = useState(0);
+export default function Menu({ menu }: { menu: FoodItem[] }) {
+  const [order, setOrder] = useState<ItemOrder[]>([]);
+  const router = useRouter();
 
-  const updateCount = (newCount: number) => {
-    const count = Math.min(Math.max(newCount));
-
-    if (count == -1) {
-      return;
-    } else {
-      setQuantity(count);
-    }
+  const updateOrder = (item: ItemOrder | FoodItem, quantity: number) => {
+    setOrder((prevOrder) => {
+      const existingItem = prevOrder.find(
+        (orderItem) => orderItem.id === item.id
+      );
+      if (existingItem) {
+        return prevOrder
+          .map((orderItem) =>
+            orderItem.id === item.id
+              ? { ...orderItem, quantity: quantity }
+              : orderItem
+          )
+          .filter((orderItem) => orderItem.quantity > 0);
+      } else {
+        return [
+          ...prevOrder,
+          { id: item.id, name: item.name, quantity, price: item.price },
+        ];
+      }
+    });
   };
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newCount = parseInt(e.target.value, 10);
-    if (!isNaN(newCount)) {
-      updateCount(newCount);
-    }
+  const submitOrder = async () => {
+    const totalPrice = order.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
+
+    const orderJson = {
+      totalPrice: parseFloat(totalPrice.toFixed(2)),
+      items: order,
+    };
+
+    const createOrder = await fetch("api/create-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(orderJson),
+    });
+
+    const res = await createOrder.json();
+
+    router.push(`/order-submit/${res.id}`);
+
+    setOrder([]); // Clear the order after submission
   };
 
-  const decrement = () => updateCount(quantity - 1);
-  const increment = () => updateCount(quantity + 1);
   return (
-    <div className="flex gap-3 flex-wrap w-full justify-center">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       {menu.map((item) => (
-        <Card
-          className="flex flex-col w-80 h-fit max-[425px]:w-full"
+        <CardItem
+          itemMenu={item}
           key={item.id}
-        >
-          <CardHeader>
-            <CardTitle>{item.name}</CardTitle>
-            <p className="text-sm text-gray-500">Categoria: {item.category}</p>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-5">
-            <p className="text-sm text-gray-600 my-2">
-              {item.description == "undefined" ? "" : item.description}
-            </p>
-            <p className="text-lg font-semibold">R${item.price.toFixed(2)}</p>
-          </CardContent>
-          <CardFooter
-            id={item.id}
-            className="flex justify-between items-center"
-          >
-            <div className="flex items-center gap-2">
-              <Button
-                onClick={decrement}
-                disabled={item.quantity === 0}
-                variant="outline"
-                size="icon"
-              >
-                <Minus className="h-4 w-4" />
-              </Button>
-              <Input
-                type="number"
-                value={quantity}
-                onChange={(e) => handleInputChange(e)}
-                className="w-14 text-center"
-              />
-              <Button
-                onClick={increment}
-                disabled={item.quantity === 0}
-                variant="outline"
-                size="icon"
-              >
-                <Plus className="h-4 w-4" />
-              </Button>
-            </div>
-          </CardFooter>
-        </Card>
+          onUpdateOrder={updateOrder}
+          quantity={
+            order.find((orderItem) => orderItem.id === item.id)?.quantity || 0
+          }
+        />
       ))}
+      <div>
+        <Button
+          onClick={submitOrder}
+          className="mt-4"
+          disabled={order.length === 0}
+        >
+          Enviar pedido
+        </Button>
+      </div>
     </div>
   );
 }

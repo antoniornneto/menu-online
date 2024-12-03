@@ -20,7 +20,7 @@ type ItemProps = {
   >;
 }[];
 
-const Menu = () => {
+const NavMenu = () => {
   const navbar: ItemProps = [
     { label: "Início", path: "/dashboard", icon: House },
     { label: "Pedidos", path: "/dashboard/orders", icon: ShoppingCart },
@@ -56,4 +56,4 @@ const Menu = () => {
   );
 };
 
-export default Menu;
+export default NavMenu;

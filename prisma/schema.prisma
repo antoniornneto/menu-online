@@ -14,14 +14,21 @@ model Menu {
   description String
   price       Int
   category    String
-  quantity    Int
+  stock       Int
   image       String
 }
 
 model Order {
-  id          Int      @id @default(autoincrement())
-  orderNumber Int
-  price       Int
-  items       String[]
-  createdAt   DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  totalPrice Int
+  items      Json
+  finished   Boolean
+  createdAt  DateTime @default(now())
+}
+
+model Item {
+  id       String @id @unique
+  name     String
+  price    Int
+  quantity Int
 }

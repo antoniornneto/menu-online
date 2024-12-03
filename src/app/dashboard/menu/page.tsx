@@ -1,5 +1,5 @@
-import DeleteButton from "@/components/clientComponents/deleteButton";
-import EditButton from "@/components/clientComponents/editButton";
+import DeleteButton from "@/components/deleteButton";
+import EditButton from "@/components/editButton";
 import ModalAddItem from "@/components/form/ModalAddItem";
 import {
   Table,
@@ -42,7 +42,7 @@ export default async function MenuPage() {
               <TableCell className="text-center">
                 R$ {item.price.toFixed(2)}
               </TableCell>
-              <TableCell className="text-center">{item.quantity}</TableCell>
+              <TableCell className="text-center">{item.stock}</TableCell>
               <TableCell className="flex gap-2">
                 <DeleteButton id={item.id} />
                 <EditButton id={item.id} />

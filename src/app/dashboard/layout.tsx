@@ -1,5 +1,5 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import Menu from "@/components/Menu";
+import Menu from "@/components/Aside";
 
 const DashboardLayout = ({
   children,

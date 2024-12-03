@@ -2,8 +2,8 @@
 
 import { Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
-import { EditForm } from "../form/EditForm";
 import { ItemProp } from "@/lib/type";
+import { EditForm } from "./form/EditForm";
 
 export default function EditButton({ id }: { id: string }) {
   const [modal, setModal] = useState(false);

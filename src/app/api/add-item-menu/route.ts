@@ -3,7 +3,7 @@ import { ItemProp } from "@/lib/type";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { category, name, description, price, quantity }: ItemProp =
+  const { category, name, description, price, stock }: ItemProp =
     await req.json();
 
   await prisma.menu.create({
@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
       name,
       description,
       price,
-      quantity,
+      stock,
       image: "/",
     },
   });

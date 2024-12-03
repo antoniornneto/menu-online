@@ -25,7 +25,7 @@ const FormSchema = z.object({
   name: z.coerce.string().min(1),
   description: z.coerce.string(),
   price: z.coerce.number(),
-  quantity: z.coerce.number(),
+  stock: z.coerce.number(),
 });
 
 export function EditForm({ closeModal, item }: ModalProps) {
@@ -38,7 +38,7 @@ export function EditForm({ closeModal, item }: ModalProps) {
       name: item?.name,
       description: item?.description,
       price: item?.price,
-      quantity: item?.quantity,
+      stock: item?.stock,
     },
   });
 
@@ -53,7 +53,7 @@ export function EditForm({ closeModal, item }: ModalProps) {
         name: values.name,
         description: values.description,
         price: values.price,
-        quantity: values.quantity,
+        stock: values.stock,
       }),
     });
     setTimeout(() => {
@@ -126,7 +126,7 @@ export function EditForm({ closeModal, item }: ModalProps) {
               />
               <FormField
                 control={form.control}
-                name="quantity"
+                name="stock"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-bold">Quantidade</FormLabel>

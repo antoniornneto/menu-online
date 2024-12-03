@@ -4,7 +4,7 @@ export interface FoodItem {
   description: string;
   price: number;
   category: string;
-  quantity: number;
+  stock: number;
 }
 
 export interface ItemProp {
@@ -13,5 +13,25 @@ export interface ItemProp {
   name: string;
   description: string;
   price: number;
+  stock: number;
+}
+
+export interface ItemOrder {
+  id: string;
+  name: string;
   quantity: number;
+  price: number;
+}
+
+export interface Order {
+  id: string;
+  totalPrice: number;
+  items: ItemOrder[];
+  finished: boolean;
+}
+
+export interface MenuItemProps {
+  itemMenu: FoodItem;
+  quantity: number;
+  onUpdateOrder: (itemMenu: FoodItem | ItemOrder, quantity: number) => void;
 }
